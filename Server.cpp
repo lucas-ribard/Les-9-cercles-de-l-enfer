@@ -1,8 +1,20 @@
 #include <iostream>
+#include <thread>
 #include "LPTF_Socket.h"
 
+void handleClient(std::unique_ptr<LPTF_Socket> client) {
+    try {
+        std::string msg = client->receiveMsg();
+        std::cout << "Message received: " << msg << std::endl;
+        client->sendMsg("Server received: " + msg);
+    } catch (const std::exception& e) {
+        std::cerr << "Client Handling Exception: " << e.what() << std::endl;
+    }
+}
+
 int main() {
-    printf("Server starting");
+    std::cout << "Server starting..." << std::endl;
+
     try {
         LPTF_Socket serverSocket;
         serverSocket.bindSocket(8888);
@@ -10,9 +22,8 @@ int main() {
 
         while (true) {
             auto client = serverSocket.acceptSocket();
-            std::string msg = client->receiveMsg();
-            std::cout << "Message received: " << msg << std::endl;
-            client->sendMsg("Hello from server");
+            std::thread clientThread(handleClient, std::move(client));
+            clientThread.detach(); // Detach the thread to allow it to run independently
         }
     } catch (const std::exception& e) {
         std::cerr << "Server Exception: " << e.what() << std::endl;
