@@ -1,7 +1,5 @@
-Compile Client :
-g++ -o Client Client.cpp ../Utils/LPTF_Socket.cpp
-Compile Server :
-g++ -o Server Server.cpp ../Utils/LPTF_Socket.cpp
+Compile both Client an Server :
+g++ -o bin/Client src/Client.cpp src/LPTF_Socket.cpp  && g++ -o bin/Server src/Server.cpp src/LPTF_Socket.cpp
 
 # Les 9 cercles de l’enfer
 Ce projet est composé de neuf étapes ( définit comme un cercle de l'enfers )

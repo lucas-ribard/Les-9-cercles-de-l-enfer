@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../lib/LPTF_Socket.hpp"
+#include "../include/LPTF_Socket.hpp"
 
 int main() {
     try {
