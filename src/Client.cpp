@@ -1,10 +1,10 @@
 #include <iostream>
-#include "../Utils/LPTF_Socket.h"
+#include "../lib/LPTF_Socket.hpp"
 
 int main() {
     try {
         LPTF_Socket clientSocket;
-        clientSocket.connectSocket("127.0.0.1", 8888);
+        clientSocket.connectSocket("10.10.30.146", 8888);
         std::cout << "(type 'exit' to quit)" << std::endl;
         while (true) {
             std::string msg;
