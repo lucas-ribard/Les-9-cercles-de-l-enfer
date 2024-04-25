@@ -1,4 +1,4 @@
-#include "../lib/LPTF_Socket.hpp"
+#include "../include/LPTF_Socket.hpp"
 #include <stdexcept>
 #include <cstring>
 #include <arpa/inet.h>
