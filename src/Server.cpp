@@ -16,7 +16,7 @@ void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
     try {
         std::string displayID = clientID.length() >= 5 ? clientID.substr(0, 5) : clientID; // make a display ID for the client
         std::string clientIP = client->getClientIP();
-        std::cout << "User #" << displayID << " connected. ip addr : "<< clientIP << std::endl;
+        std::cout << "User #" << displayID << " connected from : "<< clientIP << std::endl;
         while (true) {  // Keep the session alive until disconnected
             std::string msg = client->receiveMsg();
             
