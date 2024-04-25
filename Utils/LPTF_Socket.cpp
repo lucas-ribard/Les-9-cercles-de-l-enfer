@@ -65,3 +65,9 @@ std::string LPTF_Socket::receiveMsg() {
     }
     return std::string(buffer, valread);
 }
+
+std::string LPTF_Socket::getClientIP() {
+    char client_ip[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(this->clientAddress.sin_addr), client_ip, INET_ADDRSTRLEN);
+    return std::string(client_ip);
+}
