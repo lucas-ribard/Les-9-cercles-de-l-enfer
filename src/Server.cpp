@@ -18,7 +18,15 @@ void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
         std::string clientIP = client->getClientIP();
         std::cout << "User #" << displayID << " connected from : "<< clientIP << std::endl;
         while (true) {  // Keep the session alive until disconnected
-            std::string msg = client->receiveMsg();
+            // déroulé temporaire :
+                // le serveur demande
+                // le cloient répond
+                // le serveur confirme
+
+
+            client->sendMsg("Server ask");  //Demande
+
+            std::string msg = client->receiveMsg();  //Attend La réponse
             
             if (msg.empty()){
                 std::cout << "User #" << displayID << " disconnected." << std::endl;
@@ -27,7 +35,7 @@ void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
             
             std::cout << "Message received from User #" << displayID << " : " << msg << std::endl;
                
-            client->sendMsg("Server received: " + msg);
+            client->sendMsg("Server received: " + msg);     //confirme
         }
     } catch (const std::exception& e) {
         std::cerr << "Client Handling Exception: " << e.what() << std::endl;

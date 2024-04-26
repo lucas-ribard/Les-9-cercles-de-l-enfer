@@ -7,9 +7,10 @@ int main() {
         clientSocket.connectSocket("127.0.0.1", 8888);
         std::cout << "(type 'exit' to quit)" << std::endl;
         while (true) {
+            std::cout << clientSocket.receiveMsg() << std::endl; // Attend la requete
             std::string msg;
             std::cout << "Enter message : ";
-            std::getline(std::cin, msg);
+            std::getline(std::cin, msg);  // il repond
 
             if (msg == "exit") {// Exit the loop if the user types 'exit'
                 break; 
