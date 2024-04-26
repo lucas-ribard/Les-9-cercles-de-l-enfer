@@ -41,11 +41,20 @@ int main() {
         LPTF_Socket serverSocket;
         serverSocket.bindSocket(8888);
         serverSocket.listenSocket();
-        std::cout << "Server Ready." << std::endl;
+        serverSocket.setNonBlocking(true);  // Set the socket to non-blocking mode
+        std::cout << "Server Ready. Non-blocking mode is activated." << std::endl;
 
         while (true) {
+            //std::cout << "Waiting for a client to connect..." << std::endl;
+
             auto client = serverSocket.acceptSocket();
+            if (client == nullptr) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Wait a bit before trying again to avoid busy waiting
+                continue;  // No client to process, continue checking
+            }
+            std::cout << "Client connected." << std::endl;
             std::string clientID = generateUUID();  // Generate a unique UUID for each client
+            
             std::thread clientThread(handleClient, std::move(client), clientID);
             clientThread.detach(); // Detach the thread to allow it to run independently
         }
