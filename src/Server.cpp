@@ -1,10 +1,3 @@
-#include <iostream>
-#include <thread>
-#include <boost/uuid/uuid.hpp>
-#include <poll.h>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include "../include/LPTF_Socket.hpp"
 #include "../include/Server.hpp"
 
 // Function to generate a UUID

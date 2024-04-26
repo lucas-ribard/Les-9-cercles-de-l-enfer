@@ -4,6 +4,12 @@
 #include <string>
 #include <memory>
 #include <netinet/in.h>
+#include <stdexcept>
+#include <cstring>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 class LPTF_Socket {
 private:
