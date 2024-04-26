@@ -12,18 +12,35 @@ std::string generateUUID() {
     return to_string(id);
 }
 
+// std::string clientExecutor(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
+
+// }
+
+// void selectClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
+    
+// }
+
 void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
     try {
         std::string displayID = clientID.length() >= 5 ? clientID.substr(0, 5) : clientID; // make a display ID for the client
         std::string clientIP = client->getClientIP();
+        // std::string input;
+
         std::cout << "User #" << displayID << " connected from : "<< clientIP << std::endl;
         while (true) {  // Keep the session alive until disconnected
+            // std::cout << "Enter input: ";
+            // std::getline(std::cin, input);
+
             std::string msg = client->receiveMsg();
             
-            if (msg.empty()){
+            if (msg.empty()) {
                 std::cout << "User #" << displayID << " disconnected." << std::endl;
                 break;  // Exit loop if an empty message is received, indicating disconnection
             }
+
+            // std::cout << "input: " << input << std::endl;
+
+            // if (input == "q") exit(0);
             
             std::cout << "Message received from User #" << displayID << " : " << msg << std::endl;
                
@@ -45,8 +62,12 @@ int main() {
         std::cout << "Server Ready. Non-blocking mode is activated." << std::endl;
 
         while (true) {
-            //std::cout << "Waiting for a client to connect..." << std::endl;
+            std::string input;
+            std::cout << "Enter input: ";
+            std::getline(std::cin, input);
+            std::cout << "input: " << input << std::endl;
 
+            if (input == "q") exit(0);
             auto client = serverSocket.acceptSocket();
             if (client == nullptr) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Wait a bit before trying again to avoid busy waiting
