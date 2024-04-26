@@ -1,5 +1,5 @@
-#ifndef LPTF_SOCKET_H
-#define LPTF_SOCKET_H
+#ifndef __LPTF_SOCKET_H__
+#define __LPTF_SOCKET_H__
 
 #include <string>
 #include <memory>
@@ -13,8 +13,10 @@ private:
     void setupAddress(int port);
 
 public:
-    LPTF_Socket();
-    ~LPTF_Socket();
+    LPTF_Socket(); // Default constructor
+    ~LPTF_Socket(); // Destructor
+    LPTF_Socket(const LPTF_Socket&); // Copy constructor
+    LPTF_Socket &operator=(const LPTF_Socket&); // Affectation operator
 
     void bindSocket(int port);
     void listenSocket();
