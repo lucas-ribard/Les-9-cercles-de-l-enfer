@@ -2,6 +2,12 @@
 #include "../include/LPTF_Socket.hpp"
 
 int main() {
+
+      #ifdef _WIN32
+    std::cout << "Running on Windows OS\n";
+    
+    #elif __linux__ //if on linux, run linux client
+   
     try {
         LPTF_Socket clientSocket;
         clientSocket.connectSocket("127.0.0.1", 8888);
@@ -16,13 +22,24 @@ int main() {
                 break; 
             }
 
-            clientSocket.sendMsg(msg); // Send the user input to the server
-            std::cout << clientSocket.receiveMsg() << std::endl; // Receive and print the response from the server
+                clientSocket.sendMsg(msg); // Send the user input to the server
+                std::cout << clientSocket.receiveMsg() << std::endl; // Receive and print the response from the server
+            }
+            
+        } catch (const std::exception& e) {
+            std::cerr << "Client Exception: " << e.what() << std::endl;
+            return 1;
         }
-        
-    } catch (const std::exception& e) {
-        std::cerr << "Client Exception: " << e.what() << std::endl;
-        return 1;
-    }
+        return 0;
+
+
+    #elif __APPLE__
+    std::cout << "Running on Apple OS\n";
+
+    #else
+    std::cout << "Unsupported OS\n";
+
+    #endif
+
     return 0;
 }
