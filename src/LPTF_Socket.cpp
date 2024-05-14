@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 LPTF_Socket::LPTF_Socket() : sockfd(socket(AF_INET, SOCK_STREAM, 0)) {
     if (sockfd < 0) {
@@ -38,7 +39,7 @@ std::unique_ptr<LPTF_Socket> LPTF_Socket::acceptSocket() {
     int addrlen = sizeof(address);
     int new_socket = accept(sockfd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
     if (new_socket < 0) {
-        throw std::runtime_error("Accept failed");
+        return nullptr;  // Changed to return nullptr if accept fails (non-blocking behavior)
     }
     std::unique_ptr<LPTF_Socket> newConn(new LPTF_Socket);
     newConn->sockfd = new_socket;
@@ -70,4 +71,15 @@ std::string LPTF_Socket::getClientIP() {
     char client_ip[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &(this->clientAddress.sin_addr), client_ip, INET_ADDRSTRLEN);
     return std::string(client_ip);
+}
+
+void LPTF_Socket::setNonBlocking(bool enable) {
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags == -1) {
+        throw std::runtime_error("Failed to get flags");
+    }
+    flags = enable ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
+    if (fcntl(sockfd, F_SETFL, flags) == -1) {
+        throw std::runtime_error("Failed to set non-blocking mode");
+    }
 }
