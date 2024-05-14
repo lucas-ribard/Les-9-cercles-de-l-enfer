@@ -1,4 +1,8 @@
 #include <iostream>
+
+// change the logic to check the os so that it will 
+// change the lpft path, so we keep the function names but 
+// change the system calls behind
 #include "../include/LPTF_Socket.hpp"
 
 int main() {
