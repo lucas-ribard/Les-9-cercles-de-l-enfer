@@ -23,6 +23,7 @@ public:
     ssize_t sendMsg(const std::string& message);
     std::string receiveMsg();
     std::string getClientIP();
+    void setNonBlocking(bool enable);
 };
 
 #endif // LPTF_SOCKET_H
