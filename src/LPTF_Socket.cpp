@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <iostream>
 
 LPTF_Socket::LPTF_Socket() : sockfd(socket(AF_INET, SOCK_STREAM, 0)) {
     if (sockfd < 0) {
@@ -82,4 +83,5 @@ void LPTF_Socket::setNonBlocking(bool enable) {
     if (fcntl(sockfd, F_SETFL, flags) == -1) {
         throw std::runtime_error("Failed to set non-blocking mode");
     }
+    std::cout << "server set to nonblocking" << std::endl;
 }

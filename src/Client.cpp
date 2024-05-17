@@ -1,49 +1,56 @@
 #include <iostream>
+#include <string>
+#include "../include/LPTF_Packet.hpp"
 
-// change the logic to check the os so that it will 
-// change the lpft path, so we keep the function names but 
-// change the system calls behind
-#include "../include/LPTF_Socket.hpp"
+// Load a different header file based on the OS
+#ifdef _WIN32
+    std::cout << "Running on Windows OS\n";
+    // Need to implement the Windows client code
+
+#elif __linux__ // If on Linux, run Linux client
+    #include "../include/LPTF_Socket.hpp"
+
+#elif __APPLE__
+    std::cout << "Running on Apple OS\n";
+    // Need to implement the macOS client code
+
+#else
+    std::cout << "Unsupported OS\n";
+#endif
+
+void systemCall(const char* command) {
+#if defined _WIN32
+    system("cls");
+#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+    system("clear");
+#elif defined (__APPLE__)
+    system("clear");
+#endif
+}
 
 int main() {
+    systemCall("ls");
 
-      #ifdef _WIN32
-    std::cout << "Running on Windows OS\n";
-    
-    #elif __linux__ //if on linux, run linux client
-   
     try {
         LPTF_Socket clientSocket;
         clientSocket.connectSocket("127.0.0.1", 8888);
         std::cout << "(type 'exit' to quit)" << std::endl;
+        std::cout << "Server: " << clientSocket.receiveMsg() << std::endl;
+
         while (true) {
-            std::cout << clientSocket.receiveMsg() << std::endl; // Attend la requete
-            std::string msg;
-            std::cout << "Enter message : ";
-            std::getline(std::cin, msg);  // il repond
+            std::string serverMsg = clientSocket.receiveMsg(); // Receive message from the server
 
-            if (msg == "exit") {// Exit the loop if the user types 'exit'
-                break; 
+            if (serverMsg.empty() || serverMsg == "exit") { // Exit the loop if the server message is empty or "exit"
+                break;
             }
 
-                clientSocket.sendMsg(msg); // Send the user input to the server
-                std::cout << clientSocket.receiveMsg() << std::endl; // Receive and print the response from the server
-            }
-            
-        } catch (const std::exception& e) {
-            std::cerr << "Client Exception: " << e.what() << std::endl;
-            return 1;
+            std::cout << "Server: " << serverMsg << std::endl; // Print the server message
+
+            clientSocket.sendMsg(serverMsg); // Respond with the same message received from the server
         }
-        return 0;
-
-
-    #elif __APPLE__
-    std::cout << "Running on Apple OS\n";
-
-    #else
-    std::cout << "Unsupported OS\n";
-
-    #endif
-
+    } catch (const std::exception& e) {
+        std::cerr << "Client Exception: " << e.what() << std::endl;
+        return 1;
+    }
     return 0;
 }
