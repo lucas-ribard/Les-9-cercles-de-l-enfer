@@ -1,23 +1,51 @@
 #include <iostream>
+#include <string> 
+#include "../include/LPTF_Packet.hpp"
 
-// change the logic to check the os so that it will 
-// change the lpft path, so we keep the function names but 
-// change the system calls behind
-#include "../include/LPTF_Socket.hpp"
-
-int main() {
-
-      #ifdef _WIN32
+// load a different header file based on the OS
+ #ifdef _WIN32
     std::cout << "Running on Windows OS\n";
+    //need driss to do the windows library
     
     #elif __linux__ //if on linux, run linux client
-   
+        #include "../include/LPTF_Socket.hpp"
+        
+
+    #elif __APPLE__
+    std::cout << "Running on Apple OS\n";
+    //bruh
+
+    #else
+    std::cout << "Unsupported OS\n";
+
+    #endif
+
+void systemCall(const char* command){
+  #if defined _WIN32
+    system("cls");
+        //clrscr(); // including header file : conio.h
+    #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+        system("clear");
+        //std::cout<< u8"\033[2J\033[1;1H"; //Using ANSI Escape Sequences 
+    #elif defined (__APPLE__)
+        system("clear");
+    #endif
+}
+
+
+
+int main() {
+    systemCall("ls");
+
+    std::string msg;
+
     try {
         LPTF_Socket clientSocket;
         clientSocket.connectSocket("127.0.0.1", 8888);
         std::cout << "(type 'exit' to quit)" << std::endl;
         while (true) {
-            std::cout << clientSocket.receiveMsg() << std::endl; // Attend la requete
+            std::cout << "Server : " << clientSocket.receiveMsg() << std::endl; // Attend la requete
+            
             std::string msg;
             std::cout << "Enter message : ";
             std::getline(std::cin, msg);  // il repond
@@ -36,14 +64,4 @@ int main() {
         }
         return 0;
 
-
-    #elif __APPLE__
-    std::cout << "Running on Apple OS\n";
-
-    #else
-    std::cout << "Unsupported OS\n";
-
-    #endif
-
-    return 0;
 }

@@ -17,14 +17,17 @@ void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
         std::string displayID = clientID.length() >= 5 ? clientID.substr(0, 5) : clientID; // make a display ID for the client
         std::string clientIP = client->getClientIP();
         std::cout << "User #" << displayID << " connected from : "<< clientIP << std::endl;
+        client->sendMsg("Connection accepted");  //Demande
+
         while (true) {  // Keep the session alive until disconnected
+
             // déroulé temporaire :
-                // le serveur demande
+                // le serveur envoie un premier message ( string pour l'instant mais ca chagera pour des ordres )
                 // le cloient répond
-                // le serveur confirme
+                // le serveur confirme 
 
 
-            client->sendMsg("Server ask");  //Demande
+            client->sendMsg("waiting for your input");  //Demande
 
             std::string msg = client->receiveMsg();  //Attend La réponse
             
@@ -35,7 +38,7 @@ void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
             
             std::cout << "Message received from User #" << displayID << " : " << msg << std::endl;
                
-            client->sendMsg("Server received: " + msg);     //confirme
+            client->sendMsg("i received : " + msg);     //confirme
         }
     } catch (const std::exception& e) {
         std::cerr << "Client Handling Exception: " << e.what() << std::endl;
@@ -68,7 +71,8 @@ int main() {
         }
     } catch (const std::exception& e) {
         std::cerr << "Server Exception: " << e.what() << std::endl;
-        return 1;
-    }
+        std::cerr << "Error code: " << errno << " (" << std::strerror(errno) << ")" << std::endl;
+    return 1;
+}
     return 0;
 }
