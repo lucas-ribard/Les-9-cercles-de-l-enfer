@@ -26,7 +26,7 @@ std::string generateShortID() {
     }
     return id;
 }
-
+// function to handle client connections
 void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
     try {
         std::string clientIP = client->getClientIP();
@@ -57,7 +57,7 @@ void handleClient(std::unique_ptr<LPTF_Socket> client, std::string clientID) {
         clients.erase(clientID);
     }
 }
-
+// Function to handle console input for sending messages to clients
 void consoleInputHandler() {
     while (true) {
         std::string input;
@@ -90,7 +90,7 @@ int main() {
         serverSocket.bindSocket(8888);
         serverSocket.listenSocket();
         serverSocket.setNonBlocking(true);  // Set the socket to non-blocking mode
-        std::cout << "Server Ready. Non-blocking mode is activated." << std::endl;
+        std::cout << "Server Ready" << std::endl;
 
         while (true) {
             auto client = serverSocket.acceptSocket();
