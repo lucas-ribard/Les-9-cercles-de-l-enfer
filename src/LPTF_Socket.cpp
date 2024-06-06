@@ -6,8 +6,15 @@ LPTF_Socket::LPTF_Socket() : sockfd(socket(AF_INET, SOCK_STREAM, 0)) {
     }
 }
 
-LPTF_Socket::~LPTF_Socket() {
-    close(sockfd);
+
+int LPTF_Socket::getSockfd()
+{
+    return this->sockfd;
+}
+
+void LPTF_Socket::setSockfd(int sockfd)
+{
+    this->sockfd = sockfd;
 }
 
 void LPTF_Socket::setupAddress(int port) {

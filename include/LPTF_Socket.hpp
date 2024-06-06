@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <iostream>
 
 class LPTF_Socket {
 private:
@@ -20,9 +21,32 @@ private:
 
 public:
     LPTF_Socket(); // Default constructor
-    ~LPTF_Socket(); // Destructor
-    LPTF_Socket(const LPTF_Socket&); // Copy constructor
-    LPTF_Socket &operator=(const LPTF_Socket&); // Affectation operator
+    // ~LPTF_Socket(); // Destructor
+    // LPTF_Socket(const LPTF_Socket& socket); // Copy constructor
+    // LPTF_Socket &operator=(const LPTF_Socket& socket); // Affectation operator
+
+    ~LPTF_Socket()
+    {
+        close(sockfd);
+    }
+
+    // Copy constructor
+    LPTF_Socket(const LPTF_Socket& socket)
+    {
+        std::cout << "Copy constructor of LPTF_Socket called" << std::endl;
+        sockfd = socket.sockfd;
+    }
+
+    // Affectation operator
+    LPTF_Socket &operator=(const LPTF_Socket& socket)
+    {
+        std::cout << "Affectation operator constructor of LPTF_Socket called" << std::endl;
+        return *this;
+    }
+
+
+    int getSockfd();
+    void setSockfd(int sockfd);
 
     void bindSocket(int port);
     void listenSocket();
